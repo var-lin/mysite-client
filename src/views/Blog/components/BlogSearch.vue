@@ -118,8 +118,6 @@ export default {
   text-align: center;
   margin: 20px 0;
   min-width: 490px;
-  height: 5%;
-  position: relative;
 
   input {
     width: 380px;
