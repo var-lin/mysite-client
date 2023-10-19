@@ -1,8 +1,16 @@
 <template>
   <div class="blog-list-container" v-loading="isLoading" ref="mainContainer">
+    <BlogSearch
+      v-if="!isLoading"
+      :totalNum="totalNum"
+      :categoryId="routeInfo.categoryId"
+      :oldData="data"
+      @searchList="searchListHandle"
+    />
     <ul>
       <li v-for="item in data.rows" :key="item.id">
         <RouterLink
+          target="_blank"
           :to="{
             name: 'BlogDetail',
             params: {
@@ -15,6 +23,7 @@
         <div style="display: flex">
           <div class="thumb" v-if="item.thumb">
             <RouterLink
+              target="_blank"
               :to="{
                 name: 'BlogDetail',
                 params: {
@@ -68,7 +77,7 @@ import mainScroll from "@/mixins/mainScroll";
 import { getBlogs } from "@/api/blog";
 import { formatDate } from "@/utils";
 import Empty from "@/components/Empty";
-import eventBus from "@/eventBus";
+import BlogSearch from "./BlogSearch";
 // import { server_URL } from "@/urlConfig";
 
 export default {
@@ -76,6 +85,12 @@ export default {
   components: {
     Pager,
     Empty,
+    BlogSearch,
+  },
+  data() {
+    return {
+      totalNum: 0,
+    };
   },
   computed: {
     routeInfo() {
@@ -96,41 +111,28 @@ export default {
         this.routeInfo.limit,
         this.routeInfo.categoryId
       );
-      // 为了优化速度，把数据一定要全部循环的代码和部分循环的代码分开
-      const resFor = (() => {
-        // 需要全部都修改的代码函数
-        function allModifications(data) {
+
+      // 向搜索框传入本次文章的全部文章总数和文章分类id
+      this.totalNum = res.total;
+
+      // 删除未分类的文章
+      res.rows = res.rows.filter((data) => {
+        if (data.category) {
+          // 有分类并让多余文字打点显示
           if (data.title.length > 70) {
             data.description = data.description.slice(0, 70) + "...";
           }
           if (data.description.length > 200) {
             data.description = data.description.slice(0, 200) + "...";
           }
+          return data;
         }
-        if (this.routeInfo.categoryId == -1) {
-          // 部分修改 + 全部修改
-          return (data) => {
-            allModifications(data);
-            if (this.routeInfo.categoryId == -1) {
-              data.title = `[${data.category.name}] ${data.title}`;
-            }
-          };
-        }
-        return (data) => {
-          allModifications(data);
-        };
-      })();
-      res.rows.forEach(resFor);
-      // 向搜索框传入本次文章的全部文章总数和文章分类id
-      eventBus.$emit(
-        "blogTotalAndCategoryId",
-        res.total,
-        this.routeInfo.categoryId
-      );
+      });
 
       // res.rows.forEach((data, i) => {
       //   data.thumb = server_URL + data.thumb;
       // });
+
       return res;
     },
     formatDate,
@@ -154,6 +156,9 @@ export default {
         });
       }
     },
+    searchListHandle(data) {
+      this.data = data;
+    },
   },
   watch: {
     async $route() {
@@ -175,7 +180,7 @@ export default {
   padding-top: 0;
   overflow-y: scroll;
   width: 100%;
-  height: 95%;
+  height: 100%;
   box-sizing: border-box;
   scroll-behavior: smooth;
   ul {
