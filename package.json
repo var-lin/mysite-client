@@ -5,18 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
-    "test:Avatar": "vue serve ./src/components/Avatar/test.vue",
-    "test:Icon": "vue serve ./src/components/Icon/test.vue",
-    "test:Pager": "vue serve ./src/components/Pager/test.vue",
-    "test:Empty": "vue serve ./src/components/Empty/test.vue",
-    "test:ImageLoader": "vue serve ./src/components/ImageLoader/test.vue",
-    "test:Contact": "vue serve ./src/components/SiteAside/Contact/test.vue",
-    "test:Menu": "vue serve ./src/components/SiteAside/Menu/test.vue",
-    "test:SiteAside": "vue serve ./src/components/SiteAside/test.vue",
-    "test:Layout": "vue serve ./src/components/Layout/test.vue",
-    "test:Home": "vue serve ./src/views/Home/test.vue",
-    "test:Loading": "vue serve ./src/Loading/test.vue",
-    "test:RightList": "vue serve ./src/views/Blog/components/RightList-test.vue"
+    "sitemapMiddleware": "node src/sitemapMiddleware.js",
+    "postbuild": "npm run sitemapMiddleware"
   },
   "dependencies": {
     "axios": "^1.4.0",
