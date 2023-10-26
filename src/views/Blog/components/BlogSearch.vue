@@ -74,9 +74,28 @@ export default {
         return;
       }
 
+      // 拿取搜索过的文章内容，不进行再次搜索，利用sessionStorage，关闭网页后清除自动保存的文章
+      let blogArrCache = sessionStorage.getItem(this.categoryId);
+      blogArrCache = blogArrCache ? JSON.parse(blogArrCache) : {};
+      if (blogArrCache[this.value]) {
+        this.$emit("searchList", blogArrCache[this.value]);
+
+        this.$showMessage({
+          content: `共搜索到 ${blogArrCache[this.value].length} 个内容`,
+          type: "success",
+          duration: 1500,
+        });
+        return;
+      }
+
+      // 计时
+      const firstTime = Date.now();
+
       // 搜索内容转小写
       const value = this.value.toLocaleLowerCase();
+      // 禁止搜索
       this.isSearch = false;
+      // 搜索的内容
       const searchArr = [];
       this.blogs.forEach((data) => {
         const title = data.title.toLocaleLowerCase();
@@ -86,25 +105,33 @@ export default {
         }
       });
 
+      // 计算耗时 单位-秒
+      const lastTime = Date.now();
+      const timeConsuming = (firstTime - lastTime) / 1000;
+
+      // 想文章列表发送搜索结果
       const searchArrLength = searchArr.length;
       if (searchArrLength) {
+        blogArrCache[this.value] = searchArr;
+        sessionStorage.setItem(this.categoryId, JSON.stringify(blogArrCache));
+
         // 有内容传值给父组件
-        this.$emit("searchList", {
-          rows: searchArr,
-        });
+        this.$emit("searchList", searchArr);
+
         this.$showMessage({
-          content: `共搜索到 ${searchArrLength} 个内容`,
+          content: `共搜索到 ${searchArrLength} 个内容 —— 耗时 ${timeConsuming} 秒`,
           type: "success",
           duration: 1500,
         });
       } else {
         this.$showMessage({
-          content: "未搜索到相关内容",
+          content: `未搜索到相关内容 —— 耗时 ${timeConsuming} 秒`,
           type: "error",
           duration: 1500,
         });
       }
 
+      // searchDelaytiem秒后可以再次搜索
       setTimeout(() => {
         this.isSearch = true;
       }, this.searchDelaytiem);

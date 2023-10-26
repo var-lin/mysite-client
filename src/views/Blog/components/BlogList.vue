@@ -175,7 +175,9 @@ export default {
       }
     },
     searchListHandle(data) {
-      this.data = data;
+      this.data = {
+        rows: data,
+      };
       this.isReData = true;
     },
   },
