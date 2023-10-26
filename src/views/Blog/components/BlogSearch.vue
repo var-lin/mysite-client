@@ -15,8 +15,8 @@ import { getBlogs } from "@/api/blog";
 
 export default {
   props: {
-    totalNum: {
-      type: Number,
+    currentArticle: {
+      type: Object,
       required: true,
     },
     categoryId: {
@@ -32,7 +32,11 @@ export default {
     };
   },
   created() {
-    this.fetchData();
+    if (this.currentArticle.total > 10) {
+      this.fetchData();
+    } else {
+      this.blogs = this.currentArticle.rows;
+    }
   },
   methods: {
     async fetchData() {
@@ -54,9 +58,7 @@ export default {
       });
     },
     searchHandle() {
-      if (!this.blogs) {
-        return;
-      } else if (!this.value) {
+      if (!this.value) {
         this.$showMessage({
           content: "请输入搜索词",
           type: "error",
@@ -96,13 +98,11 @@ export default {
           duration: 1500,
         });
       } else {
-        this.isSearch = true;
         this.$showMessage({
           content: "未搜索到相关内容",
           type: "error",
           duration: 1500,
         });
-        return;
       }
 
       setTimeout(() => {

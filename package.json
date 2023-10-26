@@ -4,9 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --modern",
-    "sitemapMiddleware": "node src/sitemapMiddleware.js",
-    "postbuild": "npm run sitemapMiddleware"
+    "build": "vue-cli-service build --modern"
   },
   "dependencies": {
     "axios": "^1.4.0",

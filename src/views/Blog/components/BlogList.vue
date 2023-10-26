@@ -2,9 +2,8 @@
   <div class="blog-list-container" v-loading="isLoading" ref="mainContainer">
     <BlogSearch
       v-if="!isLoading"
-      :totalNum="totalNum"
+      :currentArticle="data"
       :categoryId="routeInfo.categoryId"
-      :oldData="data"
       @searchList="searchListHandle"
     />
     <ul>
