@@ -9,7 +9,6 @@
     <ul>
       <li v-for="item in data.rows" :key="item.id">
         <RouterLink
-          target="_blank"
           :to="{
             name: 'BlogDetail',
             params: {
@@ -22,7 +21,6 @@
         <div style="display: flex">
           <div class="thumb" v-if="item.thumb">
             <RouterLink
-              target="_blank"
               :to="{
                 name: 'BlogDetail',
                 params: {

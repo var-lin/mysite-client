@@ -15,7 +15,11 @@
         >分类：{{ blog.category.name }}</RouterLink
       >
     </div>
-    <div v-html="blog.htmlContent" class="markdown-body"></div>
+    <div
+      v-html="blog.htmlContent"
+      class="markdown-body"
+      ref="markdownBody"
+    ></div>
   </div>
 </template>
 
@@ -31,8 +35,18 @@ export default {
       required: true,
     },
   },
+  mounted() {
+    // 让文章里的全部a链接在新页面打开
+    this.replaced_A_Target();
+  },
   methods: {
     formatDate,
+    replaced_A_Target() {
+      const a = this.$refs.markdownBody.querySelectorAll("a");
+      a.forEach((target) => {
+        target.target = "_blank";
+      });
+    },
   },
 };
 </script>

@@ -40,22 +40,24 @@ export default {
   },
   methods: {
     async fetchData() {
-      await getBlogs(1, this.totalNum, this.categoryId).then((res) => {
-        // 删除未分类的文章
-        res.rows = res.rows.filter((data) => {
-          if (data.category) {
-            // 有分类并让多余文字打点显示
-            if (data.title.length > 70) {
-              data.description = data.description.slice(0, 70) + "...";
+      await getBlogs(1, this.currentArticle.total, this.categoryId).then(
+        (res) => {
+          // 删除未分类的文章
+          res.rows = res.rows.filter((data) => {
+            if (data.category) {
+              // 有分类并让多余文字打点显示
+              if (data.title.length > 70) {
+                data.description = data.description.slice(0, 70) + "...";
+              }
+              if (data.description.length > 200) {
+                data.description = data.description.slice(0, 200) + "...";
+              }
+              return data;
             }
-            if (data.description.length > 200) {
-              data.description = data.description.slice(0, 200) + "...";
-            }
-            return data;
-          }
-        });
-        this.blogs = res.rows;
-      });
+          });
+          this.blogs = res.rows;
+        }
+      );
     },
     searchHandle() {
       if (!this.value) {
@@ -107,7 +109,8 @@ export default {
 
       // 计算耗时 单位-秒
       const lastTime = Date.now();
-      const timeConsuming = (firstTime - lastTime) / 1000;
+      let timeConsuming = (firstTime - lastTime) / 1000;
+      timeConsuming = timeConsuming < 0 ? 0 : timeConsuming;
 
       // 想文章列表发送搜索结果
       const searchArrLength = searchArr.length;
