@@ -14,6 +14,7 @@
         }"
         >分类：{{ blog.category.name }}</RouterLink
       >
+      <div class="description">描述：{{ blog.description }}</div>
     </div>
     <div
       v-html="blog.htmlContent"
@@ -62,6 +63,11 @@ export default {
     }
     a {
       margin-right: 15px;
+    }
+    .description {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
     }
   }
   .markdown-body {
