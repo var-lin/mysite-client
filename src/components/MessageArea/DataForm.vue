@@ -53,6 +53,12 @@ export default {
       isSubmiting: false,
     };
   },
+  created() {
+    const historyNickname = localStorage.getItem("historyNickname");
+    if (historyNickname) {
+      this.formData.nickname = historyNickname;
+    }
+  },
   methods: {
     handleSubmit() {
       this.error.nickname = this.formData.nickname ? "" : "请填写昵称";
@@ -81,6 +87,12 @@ export default {
         }
       });
     },
+  },
+  destroyed() {
+    const nickname = this.formData.nickname;
+    if (nickname) {
+      localStorage.setItem("historyNickname", nickname);
+    }
   },
 };
 </script>
