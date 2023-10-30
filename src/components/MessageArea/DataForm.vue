@@ -39,6 +39,10 @@
 </template>
 
 <script>
+import { sendMail } from "@/api/sendMail";
+import { formatDate } from "@/utils";
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
@@ -59,7 +63,9 @@ export default {
       this.formData.nickname = historyNickname;
     }
   },
+  computed: mapState("setting", ["data"]),
   methods: {
+    formatDate,
     handleSubmit() {
       this.error.nickname = this.formData.nickname ? "" : "请填写昵称";
       this.error.content = this.formData.content ? "" : "请填写内容";
@@ -68,22 +74,43 @@ export default {
       }
       this.isSubmiting = true;
       this.$emit("submit", this.formData, (isData, successMessage) => {
+        const duration = 1500; // 多少毫秒后恢复评论
         if (isData) {
+          // 评论成功
           this.$showMessage({
             content: successMessage,
             type: "success",
-            duration: 1500,
+            duration,
             container: this.$refs.form,
             callback: () => {
               this.isSubmiting = false;
-              this.formData.nickname = "";
               this.formData.content = "";
+              // 保存昵称到本地
+              localStorage.setItem("historyNickname", this.formData.nickname);
+              // 发送给邮箱
+              const mailTitle = isData.blog
+                ? "个人博客文章评论"
+                : "个人博客留言板评论";
+              const blogName = isData.blog
+                ? `评论的文章名：${isData.blog.title}\n评论的文章id：${isData.blog.id}\n\n`
+                : "";
+              sendMail(
+                this.data.mail,
+                mailTitle,
+                `${blogName}评论者昵称：${isData.nickname}\n评论者内容：${
+                  isData.content
+                }\n\n评论id：${isData.id}\n评论时间：${formatDate(
+                  isData.createDate,
+                  true
+                )}`
+              );
             },
           });
         } else {
+          // 评论失败
           setTimeout(() => {
             this.isSubmiting = false;
-          }, 1500);
+          }, duration);
         }
       });
     },

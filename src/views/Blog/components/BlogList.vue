@@ -1,7 +1,7 @@
 <template>
   <div class="blog-list-container" v-loading="isLoading" ref="mainContainer">
     <BlogSearch
-      v-if="!isLoading"
+      v-if="!isLoading && oldData"
       :currentArticle="data"
       :categoryId="routeInfo.categoryId"
       @searchList="searchListHandle"

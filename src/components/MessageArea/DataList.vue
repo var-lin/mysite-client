@@ -14,6 +14,7 @@
 <script>
 import Avatar from "@/components/Avatar";
 import { formatDate } from "@/utils";
+
 export default {
   components: {
     Avatar,

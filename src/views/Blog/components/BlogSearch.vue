@@ -31,13 +31,6 @@ export default {
       isSearch: true, // 是否可以搜索
     };
   },
-  created() {
-    if (this.currentArticle.total > 10) {
-      this.fetchData();
-    } else {
-      this.blogs = this.currentArticle.rows;
-    }
-  },
   methods: {
     async fetchData() {
       await getBlogs(1, this.currentArticle.total, this.categoryId).then(
@@ -59,7 +52,16 @@ export default {
         }
       );
     },
-    searchHandle() {
+    async searchHandle() {
+      // 获取全部文章
+      if (this.blogs.length == 0) {
+        if (this.currentArticle.total > 10) {
+          await this.fetchData();
+        } else {
+          this.blogs = this.currentArticle.rows;
+        }
+      }
+
       if (!this.value) {
         this.$showMessage({
           content: "请输入搜索词",
@@ -67,7 +69,9 @@ export default {
           duration: 1500,
         });
         return;
-      } else if (!this.isSearch) {
+      }
+
+      if (!this.isSearch) {
         this.$showMessage({
           content: "你的操作太迅速",
           type: "error",
