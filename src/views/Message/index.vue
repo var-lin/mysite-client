@@ -14,7 +14,7 @@
 import MessageArea from "@/components/MessageArea";
 import fetchData from "@/mixins/fetchData";
 import mainScroll from "@/mixins/mainScroll";
-import * as msgApi from "@/api/message";
+import { getMessages, postMessage } from "@/api/message";
 // import { server_URL } from "@/urlConfig";
 
 export default {
@@ -27,8 +27,8 @@ export default {
       limit: 10,
     };
   },
-  mixins: [fetchData({ total: 0, row: [] }), mainScroll("messageContainer")],
-  created() {
+  mixins: [fetchData({ total: 0, rows: [] }), mainScroll("messageContainer")],
+  async created() {
     this.$bus.$on("mainScroll", this.handleScroll);
   },
   computed: {
@@ -38,17 +38,18 @@ export default {
   },
   methods: {
     async fetchData() {
-      const res = await msgApi.getMessages(this.page, this.limit);
+      const res = await getMessages(this.page, this.limit);
       // res.rows.forEach((data, i) => {
       //   data.avatar = server_URL + data.avatar;
       // });
       return res;
     },
     async handleSubmit(data, callback) {
-      const res = await msgApi.postMessage(data);
+      const res = await postMessage(data);
       // res.avatar = server_URL + res.avatar;
       if (res) {
         this.data.rows.unshift(res);
+        this.data.total++;
       }
       callback(res, "感谢你的留言");
     },

@@ -2,8 +2,10 @@ import request from "./request"
 
 export async function getMessages(page = 1, limit = 10) {
     return await request.get("/api/message", {
-        page,
-        limit
+        params: {
+            page,
+            limit
+        }
     })
 }
 

@@ -65,7 +65,6 @@ export default {
   },
   computed: mapState("setting", ["data"]),
   methods: {
-    formatDate,
     handleSubmit() {
       this.error.nickname = this.formData.nickname ? "" : "请填写昵称";
       this.error.content = this.formData.content ? "" : "请填写内容";
