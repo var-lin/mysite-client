@@ -6,11 +6,19 @@
       <span>浏览：{{ blog.scanNumber }}</span>
       <a href="#data-form-container">评论：{{ blog.commentNumber }}</a>
       <RouterLink
+        v-if="blog.category.id"
         :to="{
           name: 'CategoryBlog',
           params: {
             categoryId: blog.category.id,
           },
+        }"
+        >分类：{{ blog.category.name }}</RouterLink
+      >
+      <RouterLink
+        v-else
+        :to="{
+          name: 'Blog',
         }"
         >分类：{{ blog.category.name }}</RouterLink
       >
@@ -36,18 +44,24 @@ export default {
       required: true,
     },
   },
+  created() {
+    if (!this.blog.category) {
+      this.blog.category = {
+        name: "未分类",
+      };
+    }
+  },
   mounted() {
     // 让文章里的全部a链接在新页面打开
-    this.replaced_A_Target();
+    const markdown_a = this.$refs.markdownBody.querySelectorAll("a");
+    if (markdown_a.length) {
+      markdown_a.forEach((target) => {
+        target.target = "_blank";
+      });
+    }
   },
   methods: {
     formatDate,
-    replaced_A_Target() {
-      const a = this.$refs.markdownBody.querySelectorAll("a");
-      a.forEach((target) => {
-        target.target = "_blank";
-      });
-    },
   },
 };
 </script>

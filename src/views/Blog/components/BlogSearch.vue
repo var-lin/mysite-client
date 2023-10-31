@@ -36,17 +36,20 @@ export default {
       await getBlogs(1, this.currentArticle.total, this.categoryId).then(
         (res) => {
           // 删除未分类的文章
-          res.rows = res.rows.filter((data) => {
-            if (data.category) {
-              // 有分类并让多余文字打点显示
-              if (data.title.length > 70) {
-                data.description = data.description.slice(0, 70) + "...";
-              }
-              if (data.description.length > 200) {
-                data.description = data.description.slice(0, 200) + "...";
-              }
-              return data;
+          res.rows.forEach((data) => {
+            if (!data.category) {
+              data.category = {
+                name: "未分类",
+              };
             }
+            // 有分类并让多余文字打点显示
+            if (data.title.length > 70) {
+              data.description = data.description.slice(0, 70) + "...";
+            }
+            if (data.description.length > 200) {
+              data.description = data.description.slice(0, 200) + "...";
+            }
+            return data;
           });
           this.blogs = res.rows;
         }

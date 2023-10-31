@@ -37,6 +37,7 @@
               <span>浏览：{{ item.scanNumber }}</span>
               <span>评论：{{ item.commentNumber }}</span>
               <RouterLink
+                v-if="item.category.id"
                 :to="{
                   name: 'CategoryBlog',
                   params: {
@@ -44,6 +45,13 @@
                   },
                 }"
                 >{{ item.category.name }}</RouterLink
+              >
+              <RouterLink
+                v-else
+                :to="{
+                  name: 'Blog',
+                }"
+                >分类：{{ item.category.name }}</RouterLink
               >
             </div>
             <div class="desc">
@@ -125,17 +133,19 @@ export default {
       // 向搜索框传入本次文章的全部文章总数和文章分类id
       this.totalNum = res.total;
 
-      // 删除未分类的文章
-      res.rows = res.rows.filter((data) => {
-        if (data.category) {
-          // 有分类并让多余文字打点显示
-          if (data.title.length > 70) {
-            data.description = data.description.slice(0, 70) + "...";
-          }
-          if (data.description.length > 200) {
-            data.description = data.description.slice(0, 200) + "...";
-          }
-          return data;
+      res.rows.forEach((data) => {
+        // 未分类的文章添加name
+        if (!data.category) {
+          data.category = {
+            name: "未分类",
+          };
+        }
+        // 有分类并让多余文字打点显示
+        if (data.title.length > 70) {
+          data.description = data.description.slice(0, 70) + "...";
+        }
+        if (data.description.length > 200) {
+          data.description = data.description.slice(0, 200) + "...";
         }
       });
 
@@ -205,8 +215,8 @@ export default {
   .reData {
     text-align: center;
     position: fixed;
-    right: 50px;
-    bottom: 150px;
+    right: 120px;
+    bottom: 50px;
     width: 50px;
     height: 50px;
     line-height: 50px;

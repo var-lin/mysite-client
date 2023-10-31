@@ -85,8 +85,10 @@ export default {
             callback: () => {
               this.isSubmiting = false;
               this.formData.content = "";
+
               // 保存昵称到本地
               localStorage.setItem("historyNickname", this.formData.nickname);
+
               // 发送给邮箱
               const mailTitle = isData.blog
                 ? "个人博客文章评论"
