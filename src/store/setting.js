@@ -23,6 +23,7 @@ export default {
             // res.avatar = server_URL + res.avatar;
             // res.qqQrCode = server_URL + res.qqQrCode;
             // res.weixinQrCode = server_URL + res.weixinQrCode;
+
             ctx.commit("setData", res)
             ctx.commit("setLoading", false)
             if (res.favicon) {

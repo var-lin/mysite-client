@@ -65,6 +65,9 @@ export default {
       });
       // res.avatar = server_URL + res.avatar;
       if (res) {
+        if (formData.identity) {
+          res.identity = formData.identity;
+        }
         this.data.rows.unshift(res);
         this.data.total++;
       }

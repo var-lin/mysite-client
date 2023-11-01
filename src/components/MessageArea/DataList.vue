@@ -3,7 +3,12 @@
     <li v-for="item in list" :key="item.id">
       <Avatar :url="item.avatar" :size="44" />
       <div class="data">
-        <div class="nickname">{{ item.nickname }}</div>
+        <div class="nickname">
+          {{ item.nickname }}
+          <span v-if="data[item.nickname]" class="identity">{{
+            data[item.nickname].identity
+          }}</span>
+        </div>
         <div class="content">{{ item.content }}</div>
         <div class="time">{{ formatDate(item.createDate, true) }}</div>
       </div>
@@ -14,6 +19,7 @@
 <script>
 import Avatar from "@/components/Avatar";
 import { formatDate } from "@/utils";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -30,6 +36,7 @@ export default {
       newImgUrl: [],
     };
   },
+  computed: mapState("identity", ["data"]),
   methods: {
     formatDate,
   },
@@ -42,31 +49,42 @@ export default {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-li {
-  display: flex;
-  border-bottom: 1px solid lighten(@gray, 20%);
-  padding: 15px 0;
-}
-.avatar-container {
-  margin-right: 15px;
-}
-.nickname {
-  color: darken(@success, 10%);
-  margin-bottom: 10px;
-}
-.content {
-  font-size: 14px;
-}
-.data {
-  flex: 1 1 auto;
-  position: relative;
-}
-.time {
-  position: absolute;
-  right: 0;
-  top: 5px;
-  font-size: 12px;
-  color: @gray;
+
+  li {
+    display: flex;
+    border-bottom: 1px solid lighten(@gray, 20%);
+    padding: 15px 0;
+
+    .avatar-container {
+      margin-right: 15px;
+    }
+
+    .data {
+      flex: 1 1 auto;
+      position: relative;
+
+      .nickname {
+        color: darken(@success, 10%);
+        margin-bottom: 10px;
+
+        .identity {
+          font-size: 10px;
+          color: #f40;
+        }
+      }
+
+      .content {
+        font-size: 14px;
+      }
+
+      .time {
+        position: absolute;
+        right: 0;
+        top: 5px;
+        font-size: 12px;
+        color: @gray;
+      }
+    }
+  }
 }
 </style>

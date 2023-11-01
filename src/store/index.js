@@ -4,6 +4,7 @@ import setting from "./setting"
 import banner from "./banner"
 import about from "./about"
 import project from "./project"
+import identity from "./identity"
 
 if (!window.Vue) {
     install(Vue)
@@ -14,7 +15,8 @@ export default new Store({
         setting,
         banner,
         about,
-        project
+        project,
+        identity
     },
     strict: true
 })

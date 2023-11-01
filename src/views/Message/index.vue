@@ -48,6 +48,9 @@ export default {
       const res = await postMessage(data);
       // res.avatar = server_URL + res.avatar;
       if (res) {
+        if (data.identity) {
+          res.identity = data.identity;
+        }
         this.data.rows.unshift(res);
         this.data.total++;
       }

@@ -238,6 +238,7 @@ export default {
       }
       padding: 15px 0;
       border-bottom: 1px solid @gray;
+      overflow: hidden;
 
       .thumb {
         margin-right: 15px;
