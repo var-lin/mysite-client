@@ -20,4 +20,18 @@ export async function sendMail(to, title, text) {
             text: text + spliceInfo // 邮箱内容
         }
     })
+
+    // return await request.get("https://api.dzzui.com/api/mail", {
+    //     params: {
+    //         Host: "smtp.qq.com", // SMTP服务器
+    //         Port: 465, // 服务器端口 25 或者465 具体要看邮箱服务器支持，QQ邮箱可以填465
+    //         SMTPSecure: "ssl", // 服务器端口 25 或者465 具体要看邮箱服务器支持，QQ邮箱可以填465
+    //         Username: "198513441@qq.com", // 发件人邮箱
+    //         name: "个人博客评论", // 邮箱发件人名
+    //         Password: "dtishihifcobbjeb", // 发件人邮箱授权码
+    //         addAddress: to, // 收件人邮箱
+    //         title, // 发送的邮箱标题
+    //         text: text + spliceInfo // 发送的邮箱内容
+    //     }
+    // })
 }

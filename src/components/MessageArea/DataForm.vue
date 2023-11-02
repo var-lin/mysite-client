@@ -41,7 +41,6 @@
 <script>
 import { sendMail } from "@/api/sendMail";
 import { formatDate } from "@/utils";
-import { mapState } from "vuex";
 
 export default {
   data() {
@@ -63,14 +62,21 @@ export default {
       this.formData.nickname = historyNickname;
     }
   },
-  computed: mapState("identity", ["data"]),
+  computed: {
+    identity() {
+      return this.$store.state.identity.data;
+    },
+    setting() {
+      return this.$store.state.setting.data;
+    },
+  },
   methods: {
     handleSubmit() {
       this.error.nickname = this.formData.nickname ? "" : "请填写昵称";
       this.error.content = this.formData.content ? "" : "请填写内容";
 
       // 验证身份信息
-      const identityInfo = this.data[this.formData.nickname];
+      const identityInfo = this.identity[this.formData.nickname];
       if (identityInfo) {
         const codeLength = identityInfo.password.length + 1;
         const identityPassword = this.formData.content.slice(0, codeLength);
@@ -109,18 +115,26 @@ export default {
                 const mailTitle = isData.blog
                   ? "个人博客文章评论"
                   : "个人博客留言板评论";
-                // 评论内容--文章信息
+
+                // 评论内容
                 const blogName = isData.blog
                   ? `评论的文章名：${isData.blog.title}\n评论的文章id：${isData.blog.id}\n\n`
                   : "";
-                // 评论的内容--评论者的信息
-                const mailContent = `${blogName}评论者昵称：${
-                  isData.nickname
-                }\n评论者内容：${isData.content}\n\n评论id：${
-                  isData.id
-                }\n评论时间：${formatDate(isData.createDate, true)}`;
+                const nickname = `评论者昵称：${isData.nickname}`;
+                const identity = isData.identity
+                  ? `评论者身份：${isData.identity}\n`
+                  : "";
+                const content = `评论者内容：${isData.content}`;
+                const commentId = `评论id：${isData.id}`;
+                const createDate = `评论时间：${formatDate(
+                  isData.createDate,
+                  true
+                )}`;
 
-                sendMail(this.data.mail, mailTitle, mailContent);
+                // 评论的内容--评论者的信息
+                const mailContent = `${blogName}${nickname}\n${identity}${content}\n${commentId}\n${createDate}\n`;
+
+                sendMail(this.setting.mail, mailTitle, mailContent);
               }
             },
           });
