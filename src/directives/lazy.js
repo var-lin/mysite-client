@@ -2,7 +2,7 @@ import eventBus from "@/eventBus";
 import { debounce } from "@/utils";
 import defaultGif from "@/assets/default.gif"
 
-function lazy() {
+const lazy = (() => {
     // es6 api写法，如果有则用如果没有用原始方法
     if (window.IntersectionObserver) {
         const ob = new IntersectionObserver((entries) => {
@@ -71,5 +71,5 @@ function lazy() {
             }
         }
     }
-}
+});
 export default lazy()
