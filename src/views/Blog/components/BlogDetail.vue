@@ -86,9 +86,6 @@ export default {
   }
   .markdown-body {
     margin: 2em 0;
-    a {
-      margin-left: 50px !important;
-    }
   }
 }
 </style>

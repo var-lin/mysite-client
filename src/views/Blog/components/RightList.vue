@@ -1,7 +1,9 @@
 <template>
   <ul class="right-list-container">
-    <li v-for="(item, i) in list" :key="i" @click="handleClick(item)">
-      <span :class="{ active: item.isSelect }">{{ item.name }}</span>
+    <li v-for="(item, i) in list" :key="i">
+      <span @click="handleClick(item)" :class="{ active: item.isSelect }">{{
+        item.name
+      }}</span>
       <span
         v-if="item.aside"
         class="aside"
