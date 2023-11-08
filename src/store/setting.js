@@ -24,7 +24,7 @@ export default {
             // res.qqQrCode = server_URL + res.qqQrCode;
             // res.weixinQrCode = server_URL + res.weixinQrCode;
 
-            ctx.commit("setData", res)
+            ctx.commit("setData", Object.freeze(res))
             ctx.commit("setLoading", false)
             if (res.favicon) {
                 let link = document.querySelector("link[rel='shortcut icon']");

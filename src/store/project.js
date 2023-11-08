@@ -25,7 +25,7 @@ export default {
             // res.forEach((data, i) => {
             //     data.thumb = server_URL + data.thumb
             // })
-            ctx.commit("setData", res)
+            ctx.commit("setData", Object.freeze(res))
             ctx.commit("setLoading", false)
         }
     }

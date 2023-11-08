@@ -21,7 +21,7 @@ export default {
             }
             ctx.commit("setLoading", true)
             const res = await getAbout()
-            ctx.commit("setData", res)
+            ctx.commit("setData", Object.freeze(res))
             ctx.commit("setLoading", false)
         }
     }

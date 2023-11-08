@@ -153,8 +153,8 @@ export default {
       //   data.thumb = server_URL + data.thumb;
       // });
 
-      // 保存一份旧数据搜索后可以返回
-      this.oldData = res;
+      // 保存一份旧数据搜索后可以返回 // 数据冻结，避免数据响应式vue再次遍历
+      this.oldData = Object.freeze(res);
       if (this.isReData) {
         this.isReData = false;
       }

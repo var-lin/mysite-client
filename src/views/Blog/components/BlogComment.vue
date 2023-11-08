@@ -17,7 +17,7 @@ import { getComments, postComment } from "@/api/blog";
 // import { server_URL } from "@/urlConfig";
 
 export default {
-  mixins: [fetchData({ total: 0, rows: [] })],
+  mixins: [fetchData({ total: 0, rows: [] }, false)],
   components: {
     MessageArea,
   },

@@ -1,4 +1,4 @@
-export default function (defaultDataValue = null) {
+export default function (defaultDataValue = null, isFreeze = true) {
     return {
         data() {
             return {
@@ -7,7 +7,12 @@ export default function (defaultDataValue = null) {
             }
         },
         async created() {
-            this.data = await this.fetchData();
+            const res = await this.fetchData()
+            if (isFreeze) {
+                this.data = Object.freeze(res);
+            } else {
+                this.data = res
+            }
             this.isLoading = false;
         }
     }

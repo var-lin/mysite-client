@@ -26,7 +26,7 @@ export default {
             //     data.bigImg = server_URL + data.bigImg;
             //     data.midImg = server_URL + data.midImg;
             // })
-            ctx.commit("setData", res)
+            ctx.commit("setData", Object.freeze(res))
             ctx.commit("setLoading", false)
         }
     }

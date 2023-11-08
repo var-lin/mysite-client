@@ -51,7 +51,8 @@ export default {
             }
             return data;
           });
-          this.blogs = res.rows;
+          // 数据冻结，避免数据响应式vue再次遍历
+          this.blogs = Object.freeze(res.rows);
         }
       );
     },
@@ -104,15 +105,17 @@ export default {
       const value = this.value.toLocaleLowerCase();
       // 禁止搜索
       this.isSearch = false;
-      // 搜索的内容
-      const searchArr = [];
-      this.blogs.forEach((data) => {
-        const title = data.title.toLocaleLowerCase();
-        if (title.includes(value) && data.category) {
-          // 存在用户想要的文章（忽略大小写）
-          searchArr.push(data);
-        }
-      });
+
+      // 数据冻结，避免数据响应式vue再次遍历
+      const searchArr = Object.freeze(
+        this.blogs.filter((data) => {
+          const title = data.title.toLocaleLowerCase();
+          if (title.includes(value)) {
+            // 存在用户想要的文章（忽略大小写）
+            return data;
+          }
+        })
+      );
 
       // 计算耗时 单位-秒
       const lastTime = Date.now();

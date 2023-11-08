@@ -27,7 +27,10 @@ export default {
       limit: 10,
     };
   },
-  mixins: [fetchData({ total: 0, rows: [] }), mainScroll("messageContainer")],
+  mixins: [
+    fetchData({ total: 0, rows: [] }, false),
+    mainScroll("messageContainer"),
+  ],
   async created() {
     this.$bus.$on("mainScroll", this.handleScroll);
   },
