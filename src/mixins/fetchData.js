@@ -8,11 +8,7 @@ export default function (defaultDataValue = null, isFreeze = true) {
         },
         async created() {
             const res = await this.fetchData()
-            if (isFreeze) {
-                this.data = Object.freeze(res);
-            } else {
-                this.data = res
-            }
+            this.data = isFreeze ? Object.freeze(res) : res;
             this.isLoading = false;
         }
     }

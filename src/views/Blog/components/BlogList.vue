@@ -186,6 +186,7 @@ export default {
       this.data = {
         rows: data,
       };
+      this.$refs.mainContainer.scrollTop = 0;
       this.isReData = true;
     },
   },

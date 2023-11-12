@@ -1,5 +1,5 @@
 <template>
-  <div class="search" v-if="blogs">
+  <div class="search-container" v-if="blogs">
     <input
       type="search"
       v-model.trim="value"
@@ -53,6 +53,7 @@ export default {
           });
           // 数据冻结，避免数据响应式vue再次遍历
           this.blogs = Object.freeze(res.rows);
+          console.log(this.blogs);
         }
       );
     },
@@ -154,10 +155,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.search {
+.search-container {
+  position: sticky;
+  top: 0;
   text-align: center;
-  margin: 20px 0;
+  padding: 20px 0;
   min-width: 490px;
+  background: #fff;
 
   input {
     width: 380px;
