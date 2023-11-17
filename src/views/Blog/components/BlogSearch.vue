@@ -53,7 +53,6 @@ export default {
           });
           // 数据冻结，避免数据响应式vue再次遍历
           this.blogs = Object.freeze(res.rows);
-          console.log(this.blogs);
         }
       );
     },

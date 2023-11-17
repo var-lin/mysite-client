@@ -1,7 +1,13 @@
 <template>
   <div class="site-aside-container">
     <template v-if="data">
-      <Avatar :url="data && data.avatar" />
+      <RouterLink
+        :to="{
+          path: '/',
+        }"
+      >
+        <Avatar :url="data && data.avatar" />
+      </RouterLink>
       <h1 class="title">{{ data.siteTitle }}</h1>
     </template>
 
