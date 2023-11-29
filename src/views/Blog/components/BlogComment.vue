@@ -14,7 +14,6 @@
 import MessageArea from "@/components/MessageArea";
 import fetchData from "@/mixins/fetchData";
 import { getComments, postComment } from "@/api/blog";
-// import { server_URL } from "@/urlConfig";
 
 export default {
   mixins: [fetchData({ total: 0, rows: [] }, false)],
@@ -42,9 +41,6 @@ export default {
         this.page,
         this.limit
       );
-      // res.rows.forEach((data, i) => {
-      //   data.avatar = server_URL + data.avatar;
-      // });
       return res;
     },
     async fetchMore() {
@@ -63,11 +59,7 @@ export default {
         blogId: this.$route.params.id,
         ...formData,
       });
-      // res.avatar = server_URL + res.avatar;
       if (res) {
-        if (formData.identity) {
-          res.identity = formData.identity;
-        }
         this.data.rows.unshift(res);
         this.data.total++;
       }

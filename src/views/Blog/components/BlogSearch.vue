@@ -31,6 +31,13 @@ export default {
       isSearch: true, // 是否可以搜索
     };
   },
+  mounted() {
+    const search = this.$route.query.search;
+    if (search) {
+      this.value = search;
+      this.searchHandle();
+    }
+  },
   methods: {
     async fetchData() {
       await getBlogs(1, this.currentArticle.total, this.categoryId).then(
@@ -57,15 +64,6 @@ export default {
       );
     },
     async searchHandle() {
-      // 获取全部文章
-      if (this.blogs.length == 0) {
-        if (this.currentArticle.total > 10) {
-          await this.fetchData();
-        } else {
-          this.blogs = this.currentArticle.rows;
-        }
-      }
-
       if (!this.value) {
         this.$showMessage({
           content: "请输入搜索词",
@@ -84,6 +82,24 @@ export default {
         return;
       }
 
+      if (this.$route.query.search !== this.value) {
+        this.$router.push({
+          query: {
+            search: this.value,
+          },
+        });
+      }
+
+      // 获取全部文章 或者 某文章分类下的文章
+      if (this.blogs.length == 0) {
+        // 如果改文章类型下的文章总量超过10个，就需要请求拿到全部文章了（一页文章10个文章）
+        if (this.currentArticle.total > 10) {
+          await this.fetchData();
+        } else {
+          this.blogs = this.currentArticle.rows;
+        }
+      }
+
       // 拿取搜索过的文章内容，不进行再次搜索，利用sessionStorage，关闭网页后清除自动保存的文章
       let blogArrCache = sessionStorage.getItem(this.categoryId);
       blogArrCache = blogArrCache ? JSON.parse(blogArrCache) : {};
@@ -95,6 +111,13 @@ export default {
           type: "success",
           duration: 1500,
         });
+
+        // 禁止搜索
+        this.isSearch = false;
+        // searchDelaytiem秒后可以再次搜索
+        setTimeout(() => {
+          this.isSearch = true;
+        }, this.searchDelaytiem);
         return;
       }
 

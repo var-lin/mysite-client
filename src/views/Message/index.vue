@@ -15,7 +15,6 @@ import MessageArea from "@/components/MessageArea";
 import fetchData from "@/mixins/fetchData";
 import mainScroll from "@/mixins/mainScroll";
 import { getMessages, postMessage } from "@/api/message";
-// import { server_URL } from "@/urlConfig";
 
 export default {
   components: {
@@ -42,18 +41,11 @@ export default {
   methods: {
     async fetchData() {
       const res = await getMessages(this.page, this.limit);
-      // res.rows.forEach((data, i) => {
-      //   data.avatar = server_URL + data.avatar;
-      // });
       return res;
     },
     async handleSubmit(data, callback) {
       const res = await postMessage(data);
-      // res.avatar = server_URL + res.avatar;
       if (res) {
-        if (data.identity) {
-          res.identity = data.identity;
-        }
         this.data.rows.unshift(res);
         this.data.total++;
       }

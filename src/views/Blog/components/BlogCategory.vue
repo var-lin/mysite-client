@@ -22,6 +22,9 @@ export default {
       return +this.$route.query.limit || 10;
     },
     list() {
+      // 如果正在搜索文章，那么文章分类全为未选择状态
+      const isSearching = !!this.$route.query.search;
+
       const totalArticleCount = this.data.reduce(
         (a, b) => a + b.articleCount,
         0
@@ -32,7 +35,7 @@ export default {
       ];
       return result.map((it) => ({
         ...it,
-        isSelect: it.id === this.categoryId,
+        isSelect: isSearching ? false : it.id === this.categoryId,
         aside: `${it.articleCount}篇`,
       }));
     },

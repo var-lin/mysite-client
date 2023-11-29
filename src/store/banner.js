@@ -1,5 +1,4 @@
 import { getBanners } from "@/api/banner"
-// import { server_URL } from "@/urlConfig"
 
 export default {
     namespaced: true,
@@ -22,10 +21,6 @@ export default {
             }
             ctx.commit("setLoading", true)
             const res = await getBanners();
-            // res.forEach((data, i) => {
-            //     data.bigImg = server_URL + data.bigImg;
-            //     data.midImg = server_URL + data.midImg;
-            // })
             ctx.commit("setData", Object.freeze(res))
             ctx.commit("setLoading", false)
         }

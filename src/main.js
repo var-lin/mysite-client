@@ -3,6 +3,9 @@ import App from './App.vue'
 import './styles/global.less'
 import router from "./router"
 import "./eventBus"  // 事件总线
+// import { Search } from 'vant-green'; // vant移动端适配组件
+// import 'vant-green/lib/index.css';
+// Vue.use(Search);
 
 // vuex全局数据
 import store from "./store"

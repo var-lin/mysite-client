@@ -1,5 +1,4 @@
 import { getProject } from "@/api/project"
-// import { server_URL } from "@/urlConfig"
 
 export default {
     namespaced: true,
@@ -22,9 +21,6 @@ export default {
             }
             ctx.commit("setLoading", true)
             const res = await getProject()
-            // res.forEach((data, i) => {
-            //     data.thumb = server_URL + data.thumb
-            // })
             ctx.commit("setData", Object.freeze(res))
             ctx.commit("setLoading", false)
         }

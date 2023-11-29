@@ -1,7 +1,7 @@
 <template>
   <div class="blog-list-container" v-loading="isLoading" ref="mainContainer">
     <BlogSearch
-      v-if="!isLoading && oldData"
+      v-if="!isLoading"
       :currentArticle="data"
       :categoryId="routeInfo.categoryId"
       @searchList="searchListHandle"
@@ -72,17 +72,6 @@
       :visibleNumber="10"
       @pageChange="handlePageChange"
     />
-
-    <div
-      class="reData"
-      v-if="isReData"
-      @click="
-        data = oldData;
-        isReData = false;
-      "
-    >
-      返回
-    </div>
   </div>
 </template>
 
@@ -94,7 +83,6 @@ import { getBlogs } from "@/api/blog";
 import { formatDate } from "@/utils";
 import Empty from "@/components/Empty";
 import BlogSearch from "./BlogSearch";
-// import { server_URL } from "@/urlConfig";
 
 export default {
   mixins: [fetchData({ total: 0, rows: [] }), mainScroll("mainContainer")],
@@ -106,8 +94,6 @@ export default {
   data() {
     return {
       totalNum: 0,
-      isReData: false,
-      oldData: {},
     };
   },
   computed: {
@@ -149,16 +135,6 @@ export default {
         }
       });
 
-      // res.rows.forEach((data, i) => {
-      //   data.thumb = server_URL + data.thumb;
-      // });
-
-      // 保存一份旧数据搜索后可以返回 // 数据冻结，避免数据响应式vue再次遍历
-      this.oldData = Object.freeze(res);
-      if (this.isReData) {
-        this.isReData = false;
-      }
-
       return res;
     },
     formatDate,
@@ -187,15 +163,16 @@ export default {
         rows: data,
       };
       this.$refs.mainContainer.scrollTop = 0;
-      this.isReData = true;
     },
   },
   watch: {
     async $route() {
-      this.isLoading = true;
-      this.$refs.mainContainer.scrollTop = 0;
-      this.data = await this.fetchData();
-      this.isLoading = false;
+      if (!this.$route.query.search) {
+        this.isLoading = true;
+        this.$refs.mainContainer.scrollTop = 0;
+        this.data = await this.fetchData();
+        this.isLoading = false;
+      }
     },
   },
 };
@@ -212,21 +189,6 @@ export default {
   height: 100%;
   box-sizing: border-box;
   scroll-behavior: smooth;
-
-  .reData {
-    text-align: center;
-    position: fixed;
-    right: 120px;
-    bottom: 50px;
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
-    color: #fff;
-    border-radius: 50%;
-    background-color: @gray;
-    z-index: 999;
-    cursor: pointer;
-  }
 
   ul {
     list-style: none;

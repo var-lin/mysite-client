@@ -1,6 +1,5 @@
 import { getSetting } from "@/api/setting"
 import { titleController } from "@/utils"
-// import { server_URL } from "@/urlConfig"
 
 export default {
     namespaced: true,
@@ -20,9 +19,6 @@ export default {
         async fetchSetting(ctx) {
             ctx.commit("setLoading", true)
             const res = await getSetting();
-            // res.avatar = server_URL + res.avatar;
-            // res.qqQrCode = server_URL + res.qqQrCode;
-            // res.weixinQrCode = server_URL + res.weixinQrCode;
 
             ctx.commit("setData", Object.freeze(res))
             ctx.commit("setLoading", false)

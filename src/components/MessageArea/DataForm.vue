@@ -5,6 +5,7 @@
     ref="form"
     @submit.prevent="handleSubmit"
   >
+    <!-- 用户昵称 -->
     <div class="form-item">
       <div class="input-area">
         <input
@@ -17,6 +18,21 @@
       </div>
       <div class="error">{{ error.nickname }}</div>
     </div>
+
+    <!-- 身份密码 -->
+    <div class="form-item" v-if="identity[formData.nickname]">
+      <div class="input-area">
+        <input
+          type="text"
+          v-model="formData.identityCode"
+          placeholder="身份密码"
+        />
+        <span class="tip">{{ formData.identityCode.length }}</span>
+      </div>
+      <div class="error">{{ error.identityCode }}</div>
+    </div>
+
+    <!-- 评论内容 -->
     <div class="form-item">
       <div class="text-area">
         <textarea
@@ -47,10 +63,12 @@ export default {
     return {
       formData: {
         nickname: "",
+        identityCode: "",
         content: "",
       },
       error: {
         nickname: "",
+        identityCode: "",
         content: "",
       },
       isSubmiting: false,
@@ -75,23 +93,22 @@ export default {
       this.error.nickname = this.formData.nickname ? "" : "请填写昵称";
       this.error.content = this.formData.content ? "" : "请填写内容";
 
-      // 验证身份信息
-      const identityInfo = this.identity[this.formData.nickname];
-      if (identityInfo) {
-        const codeLength = identityInfo.password.length + 1;
-        const identityPassword = this.formData.content.slice(0, codeLength);
-        if (identityPassword === identityInfo.password + " ") {
-          this.formData.content = this.formData.content.slice(codeLength);
-          this.formData.identity = identityInfo.identity;
-        } else {
-          this.error.nickname = "该昵称已内定，请用其他昵称";
-        }
-      }
-
-      // 如果有错误不进行后续操作
+      // 昵称及内容没填不进行后续操作
       if (this.error.nickname || this.error.content) {
         return;
       }
+
+      // 验证身份信息
+      const identityInfo = this.identity[this.formData.nickname];
+      if (identityInfo) {
+        if (identityInfo.password === this.formData.identityCode) {
+          this.error.identityCode = "";
+        } else {
+          this.error.identityCode = "身份验证失败，请检查密码";
+          return;
+        }
+      }
+
       this.isSubmiting = true;
       this.$emit("submit", this.formData, (isData, successMessage) => {
         const duration = 1500; // 多少毫秒后恢复评论
@@ -110,7 +127,7 @@ export default {
               localStorage.setItem("historyNickname", this.formData.nickname);
 
               // 不是站长发言则发邮箱给站长邮箱
-              if (isData.identity !== "站长") {
+              if (identityInfo.identity !== "站长") {
                 // 评论的标题
                 const mailTitle = isData.blog
                   ? "个人博客文章评论"
