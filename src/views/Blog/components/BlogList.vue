@@ -16,7 +16,7 @@
             },
           }"
         >
-          <h2 style="margin: 0 0 15px; min-width: 500px">{{ item.title }}</h2>
+          <h2 style="margin: 0 0 15px">{{ item.title }}</h2>
         </RouterLink>
         <div style="display: flex">
           <div class="thumb" v-if="item.thumb">
@@ -28,10 +28,15 @@
                 },
               }"
             >
-              <img v-lazy="item.thumb" :alt="item.title" :title="item.title" />
+              <img
+                v-lazy="item.thumb"
+                :alt="item.title"
+                :title="item.title"
+                :style="{ width: isMobile ? '100px' : '200px' }"
+              />
             </RouterLink>
           </div>
-          <div class="main" style="min-width: 280px">
+          <div class="main">
             <div class="aside">
               <span>日期：{{ formatDate(item.createDate) }}</span>
               <span>浏览：{{ item.scanNumber }}</span>
@@ -83,6 +88,7 @@ import { getBlogs } from "@/api/blog";
 import { formatDate } from "@/utils";
 import Empty from "@/components/Empty";
 import BlogSearch from "./BlogSearch";
+import isMobile from "@/utils/isMobile";
 
 export default {
   mixins: [fetchData({ total: 0, rows: [] }), mainScroll("mainContainer")],
@@ -93,6 +99,7 @@ export default {
   },
   data() {
     return {
+      isMobile,
       totalNum: 0,
     };
   },
@@ -208,7 +215,6 @@ export default {
 
         img {
           display: block;
-          width: 200px;
           border-radius: 5px;
         }
       }
@@ -222,11 +228,12 @@ export default {
         }
       }
 
+      @descHeight: 92px;
       .desc {
         margin-top: 15px;
         font-size: 14px;
-        height: 92px;
-        line-height: 92px /4;
+        height: @descHeight;
+        line-height: @descHeight / 4;
         overflow: hidden;
       }
     }

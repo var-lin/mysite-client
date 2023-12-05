@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout rightShowText="显示文章目录" rightHideText="隐藏文章目录">
     <div class="main-container" v-loading="isLoading" ref="mainContainer">
       <BlogDetail v-if="data" :blog="data" />
       <BLogComment v-if="!isLoading" />

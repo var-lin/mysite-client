@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout rightShowText="显示文章分类" rightHideText="隐藏文章分类">
     <BlogList />
     <template #right>
       <BlogCategory />

@@ -1,6 +1,6 @@
 <template>
   <div class="app-conptainer">
-    <Layout>
+    <Layout leftShowText="显示导航" leftHideText="隐藏导航">
       <template #left>
         <div class="aside">
           <SiteAside />

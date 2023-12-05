@@ -179,14 +179,16 @@ export default {
 <style lang="less" scoped>
 .search-container {
   position: sticky;
+  margin: 0 auto;
   top: 0;
   text-align: center;
   padding: 20px 0;
-  min-width: 490px;
+  width: 100%;
   background: #fff;
 
   input {
-    width: 380px;
+    width: 60%;
+    max-width: 500px;
     height: 40px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -194,7 +196,8 @@ export default {
   }
 
   button {
-    width: 80px;
+    width: 20%;
+    max-width: 80px;
     height: 40px;
     border: 1px solid #ccc;
     border-radius: 5px;
