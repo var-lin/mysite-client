@@ -1,6 +1,6 @@
 <template>
   <div class="blog-detail-container">
-    <span @click="$router.go(-1)" class="return"><返回</span>
+    <span @click="$router.go(-(routeJumpNum + 1))" class="return"><返回</span>
     <h1>{{ blog.title }}</h1>
     <div class="aside">
       <span>日期：{{ formatDate(blog.createDate) }}</span>
@@ -44,6 +44,11 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      routeJumpNum: 0,
+    };
+  },
   created() {
     if (!this.blog.category) {
       this.blog.category = {
@@ -63,6 +68,11 @@ export default {
   methods: {
     formatDate,
   },
+  watch: {
+    $route() {
+      this.routeJumpNum++;
+    },
+  },
 };
 </script>
 
@@ -78,6 +88,7 @@ export default {
     color: #fff;
     width: 100%;
     white-space: nowrap;
+    cursor: pointer;
   }
 
   .aside {

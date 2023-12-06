@@ -1,6 +1,11 @@
 <template>
   <Layout rightShowText="显示文章目录" rightHideText="隐藏文章目录">
-    <div class="main-container" v-loading="isLoading" ref="mainContainer">
+    <div
+      class="main-container"
+      v-loading="isLoading"
+      ref="mainContainer"
+      :style="{ minWidth }"
+    >
       <BlogDetail v-if="data" :blog="data" />
       <BLogComment v-if="!isLoading" />
     </div>
@@ -28,6 +33,14 @@ export default {
     BlogDetail,
     BlogTOC,
     BLogComment,
+  },
+  data() {
+    return {
+      minWidth: 0,
+    };
+  },
+  mounted() {
+    this.minWidth = this.$refs.mainContainer.clientWidth + "px";
   },
   methods: {
     async fetchData() {
@@ -61,6 +74,7 @@ export default {
   position: relative;
   scroll-behavior: smooth;
 }
+
 .right-container {
   min-width: 200px;
   max-width: 300px;

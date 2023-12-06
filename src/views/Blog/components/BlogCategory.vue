@@ -77,6 +77,7 @@ export default {
   padding: 15px;
   position: relative;
   overflow: scroll;
+
   h2 {
     font-weight: bold;
     letter-spacing: 2px;

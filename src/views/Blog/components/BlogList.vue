@@ -1,5 +1,10 @@
 <template>
-  <div class="blog-list-container" v-loading="isLoading" ref="mainContainer">
+  <div
+    class="blog-list-container"
+    v-loading="isLoading"
+    ref="mainContainer"
+    :style="{ minWidth }"
+  >
     <BlogSearch
       v-if="!isLoading"
       :currentArticle="data"
@@ -116,8 +121,12 @@ export default {
   },
   data() {
     return {
+      minWidth: 0,
       totalNum: 0,
     };
+  },
+  mounted() {
+    this.minWidth = this.$refs.mainContainer.clientWidth + "px";
   },
   computed: {
     routeInfo() {

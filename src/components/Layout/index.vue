@@ -12,7 +12,7 @@
       {{ leftDisplayText ? leftHideText : leftShowText }}
     </button>
 
-    <div class="main">
+    <div class="main" ref="main">
       <slot></slot>
     </div>
 
@@ -54,6 +54,7 @@ export default {
     return {
       leftDisplayText: this.$isMobile ? false : true,
       rightDisplayText: this.$isMobile ? false : true,
+      mainMinWidth: null,
     };
   },
   watch: {
