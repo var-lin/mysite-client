@@ -87,9 +87,10 @@ export default {
   padding: 25px 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
-}
-.message-area-container {
-  width: 700px;
-  margin: 0 auto;
+
+  .message-area-container {
+    width: 80%;
+    margin: 0 auto;
+  }
 }
 </style>

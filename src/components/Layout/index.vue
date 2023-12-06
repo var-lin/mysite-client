@@ -6,7 +6,7 @@
 
     <button
       class="leftDisplayBtn displayBtn"
-      v-if="$slots.left && isMobile"
+      v-if="$slots.left && $isMobile"
       @click="leftDisplayText = !leftDisplayText"
     >
       {{ leftDisplayText ? leftHideText : leftShowText }}
@@ -18,7 +18,7 @@
 
     <button
       class="rightDisplayBtn displayBtn"
-      v-if="$slots.right && isMobile"
+      v-if="$slots.right && $isMobile"
       @click="rightDisplayText = !rightDisplayText"
     >
       {{ rightDisplayText ? rightHideText : rightShowText }}
@@ -31,8 +31,6 @@
 </template>
 
 <script>
-import isMobile from "@/utils/isMobile";
-
 export default {
   props: {
     leftShowText: {
@@ -54,14 +52,13 @@ export default {
   },
   data() {
     return {
-      isMobile,
-      leftDisplayText: isMobile ? false : true,
-      rightDisplayText: isMobile ? false : true,
+      leftDisplayText: this.$isMobile ? false : true,
+      rightDisplayText: this.$isMobile ? false : true,
     };
   },
   watch: {
     $route() {
-      if (isMobile) {
+      if (this.$isMobile) {
         this.leftDisplayText = false;
         this.rightDisplayText = false;
       }
@@ -76,7 +73,7 @@ export default {
   height: 100%;
   display: flex;
 
-  .left .right {
+  .left .right .displayBtn {
     flex: 0 0 auto;
   }
 
@@ -87,7 +84,7 @@ export default {
 
   .displayBtn {
     width: 2em;
-    background: none;
+    background-color: #eee;
     border: none;
     outline: none;
     font-size: 16px;

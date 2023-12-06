@@ -32,15 +32,30 @@
                 v-lazy="item.thumb"
                 :alt="item.title"
                 :title="item.title"
-                :style="{ width: isMobile ? '100px' : '200px' }"
+                :style="{ width: $isMobile ? '100px' : '200px' }"
               />
             </RouterLink>
           </div>
           <div class="main">
             <div class="aside">
-              <span>日期：{{ formatDate(item.createDate) }}</span>
-              <span>浏览：{{ item.scanNumber }}</span>
-              <span>评论：{{ item.commentNumber }}</span>
+              <span
+                :style="{
+                  display: $isMobile ? 'block' : 'inline',
+                }"
+                >日期：{{ formatDate(item.createDate) }}</span
+              >
+              <span
+                :style="{
+                  display: $isMobile ? 'block' : 'inline',
+                }"
+                >浏览：{{ item.scanNumber }}</span
+              >
+              <span
+                :style="{
+                  display: $isMobile ? 'block' : 'inline',
+                }"
+                >评论：{{ item.commentNumber }}</span
+              >
               <RouterLink
                 v-if="item.category.id"
                 :to="{
@@ -59,10 +74,13 @@
                 >分类：{{ item.category.name }}</RouterLink
               >
             </div>
-            <div class="desc">
+            <div class="desc" v-if="!$isMobile">
               {{ item.description }}
             </div>
           </div>
+        </div>
+        <div class="desc" v-if="$isMobile">
+          {{ item.description }}
         </div>
       </li>
     </ul>
@@ -88,7 +106,6 @@ import { getBlogs } from "@/api/blog";
 import { formatDate } from "@/utils";
 import Empty from "@/components/Empty";
 import BlogSearch from "./BlogSearch";
-import isMobile from "@/utils/isMobile";
 
 export default {
   mixins: [fetchData({ total: 0, rows: [] }), mainScroll("mainContainer")],
@@ -99,7 +116,6 @@ export default {
   },
   data() {
     return {
-      isMobile,
       totalNum: 0,
     };
   },
@@ -232,7 +248,7 @@ export default {
       .desc {
         margin-top: 15px;
         font-size: 14px;
-        height: @descHeight;
+        max-height: @descHeight;
         line-height: @descHeight / 4;
         overflow: hidden;
       }
