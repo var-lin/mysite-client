@@ -49,13 +49,6 @@ export default {
                 name: "未分类",
               };
             }
-            // 有分类并让多余文字打点显示
-            if (data.title.length > 70) {
-              data.description = data.description.slice(0, 70) + "...";
-            }
-            if (data.description.length > 200) {
-              data.description = data.description.slice(0, 200) + "...";
-            }
             return data;
           });
           // 数据冻结，避免数据响应式vue再次遍历

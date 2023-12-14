@@ -21,7 +21,7 @@
             },
           }"
         >
-          <h2 style="margin: 0 0 15px">{{ item.title }}</h2>
+          <h2 class="title">{{ item.title }}</h2>
         </RouterLink>
         <div style="display: flex">
           <div class="thumb" v-if="item.thumb">
@@ -37,7 +37,7 @@
                 v-lazy="item.thumb"
                 :alt="item.title"
                 :title="item.title"
-                :style="{ width: $isMobile ? '100px' : '200px' }"
+                :style="{ width: $isMobile ? '150px' : '200px' }"
               />
             </RouterLink>
           </div>
@@ -158,13 +158,6 @@ export default {
             name: "未分类",
           };
         }
-        // 有分类并让多余文字打点显示
-        if (data.title.length > 70) {
-          data.description = data.description.slice(0, 70) + "...";
-        }
-        if (data.description.length > 200) {
-          data.description = data.description.slice(0, 200) + "...";
-        }
       });
 
       return res;
@@ -212,6 +205,8 @@ export default {
 
 <style scoped lang="less">
 @import "~@/styles/var.less";
+@import "~@/styles/mixin.less";
+
 .blog-list-container {
   line-height: 1.7;
   padding: 20px;
@@ -231,9 +226,15 @@ export default {
       &:first-child {
         padding-top: 0;
       }
+
       padding: 15px 0;
       border-bottom: 1px solid @gray;
       overflow: hidden;
+
+      .title {
+        margin-bottom: 15px;
+        .self-hide-multiple-lines(2);
+      }
 
       .thumb {
         margin-right: 15px;
@@ -257,9 +258,7 @@ export default {
       .desc {
         margin-top: 15px;
         font-size: 14px;
-        max-height: @descHeight;
-        line-height: @descHeight / 4;
-        overflow: hidden;
+        .self-hide-multiple-lines();
       }
     }
   }
