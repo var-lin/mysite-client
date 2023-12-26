@@ -136,11 +136,11 @@ export default {
 
                 // 评论内容
                 const blogName = isData.blog
-                  ? `评论的文章名：${isData.blog.title}\n评论的文章id：${isData.blog.id}\n\n`
+                  ? `<p>评论的文章名：${isData.blog.title}</p>评论的文章id：${isData.blog.id}`
                   : "";
                 const nickname = `评论者昵称：${isData.nickname}`;
                 const identity = identityInfo
-                  ? `评论者身份：${identityInfo.identity}\n`
+                  ? `评论者身份：${identityInfo.identity}`
                   : "";
                 const content = `评论者内容：${isData.content}`;
                 const commentId = `评论id：${isData.id}`;
@@ -150,7 +150,13 @@ export default {
                 )}`;
 
                 // 评论的内容--评论者的信息identity
-                const mailContent = `${blogName}${nickname}\n${identity}${content}\n${commentId}\n${createDate}\n`;
+                const mailContent = `<p>${blogName}</p>
+                <p>${nickname}</p>
+                <p>${identity}</p>
+                <p>${content}</p>
+                <p>${commentId}</p>
+                <p>${createDate}</p>
+                `;
 
                 sendMail(this.setting.mail, mailTitle, mailContent);
               }
