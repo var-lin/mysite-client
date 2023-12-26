@@ -56,15 +56,6 @@ export default {
       };
     }
   },
-  mounted() {
-    // 让文章里的全部a链接在新页面打开
-    const markdown_a = this.$refs.markdownBody.querySelectorAll("a");
-    if (markdown_a.length) {
-      markdown_a.forEach((target) => {
-        target.target = "_blank";
-      });
-    }
-  },
   methods: {
     formatDate,
   },

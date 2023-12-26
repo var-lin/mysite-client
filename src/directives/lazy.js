@@ -4,7 +4,7 @@ import defaultGif from "@/assets/default.gif"
 
 const lazy = (() => {
     // es6 api写法，如果有则用如果没有用原始方法
-    if (window.IntersectionObserver) {
+    if (!window.IntersectionObserver) {
         const ob = new IntersectionObserver((entries) => {
             for (const entry of entries) {
                 if (entry.isIntersecting) {
@@ -71,5 +71,6 @@ const lazy = (() => {
             }
         }
     }
-});
-export default lazy()
+})();
+
+export default lazy

@@ -127,7 +127,8 @@ export default {
               localStorage.setItem("historyNickname", this.formData.nickname);
 
               // 不是站长发言则发邮箱给站长邮箱
-              if (identityInfo.identity !== "站长") {
+
+              if (!identityInfo || identityInfo.identity !== "站长") {
                 // 评论的标题
                 const mailTitle = isData.blog
                   ? "个人博客文章评论"
@@ -138,8 +139,8 @@ export default {
                   ? `评论的文章名：${isData.blog.title}\n评论的文章id：${isData.blog.id}\n\n`
                   : "";
                 const nickname = `评论者昵称：${isData.nickname}`;
-                const identity = isData.identity
-                  ? `评论者身份：${isData.identity}\n`
+                const identity = identityInfo
+                  ? `评论者身份：${identityInfo.identity}\n`
                   : "";
                 const content = `评论者内容：${isData.content}`;
                 const commentId = `评论id：${isData.id}`;
@@ -148,7 +149,7 @@ export default {
                   true
                 )}`;
 
-                // 评论的内容--评论者的信息
+                // 评论的内容--评论者的信息identity
                 const mailContent = `${blogName}${nickname}\n${identity}${content}\n${commentId}\n${createDate}\n`;
 
                 sendMail(this.setting.mail, mailTitle, mailContent);
