@@ -32,6 +32,10 @@ export default {
 @import "~@/styles/mixin.less";
 .app-conptainer {
   .self-fill(fixed);
+
+  /* 全局灰色  特殊纪念日使用 */
+  // filter: grayscale(1);
+
   .aside {
     width: 250px;
     height: 100%;
